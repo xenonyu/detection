@@ -14,73 +14,30 @@ from yoloCorner import YOLOCorner
 
 from detection import ModelCornerPhone, delete_redu
 
-from utils import display_instances, get_larger_box, exportTxt, exportCondition, videoToPic, handPoseImage
+from utils import display_instances, get_larger_box, exportTxt, exportCondition, videoToPic, handPoseImage, detectFinger, detectCornerYOLO, detectCornerMask
 
-def detectFinger(image, phoneBox, name):
-    fPosition = [0,0,0]
-    fPosition = handPoseImage(image)
-
-    #判断是否成功
-    if(fPosition != None):
-        #计算原始坐标 finger Position[x0, y0, type], phone_box[x0, y0, x0, y0]
-        left = fPosition[0] + phoneBox[0] -13
-        up = fPosition[1] + phoneBox[1] - 13
-        right = fPosition[0] + phoneBox[0] + 13
-        bottom = fPosition[1] + phoneBox[1] + 13
-        finger_box = [left, up, right, bottom]
-        return np.array(finger_box)
-    else:
-        print("handpose fail on the " , name, "frame, process next\n")
-        return(None)
-    
-def detectCornerYOLO(ModelCornerP, image, phoneBox, name):
+def detectPhone(modelPhone, frameName, PILImage):
     # Run detection
-    __, result_box = modelCornerP.detect_image(image)
+    resultImg, resultBox = modelPhone.detect_image(PILImage)
 
-    if result_box.shape[1] != 4:
-        print("phone not found on the ", name, "frame\n")
-        return(None)
-    #获取手机角
-    corner_box = result_box[0]
-    print("原始角框: {}".format(corner_box))
-    #corner_box[x0, y0, x1, y1], phoneBox[x0, y0, x1, y1]
-    corner_box += [phoneBox[0], phoneBox[1], phoneBox[0], phoneBox[1]]
-    #change to [x0, y0, x1, y1]
-    print("恢复后角框:{}\n".format(corner_box))
-        
-    return(corner_box)
+    # 若成功则输出到文件
+    if resultBox.shape[1] != 4:
+        print("phone not found on the ", frameName, "frame, process next\n")
+        return None, None
+    print("成功找到手机")
+    # 打印结果个数
+    print("手机个数：", resultBox.shape[0])
     
-def detectCornerMask(modelCornerP, image, phoneBox, name):
-    # Run detection
-    results_corner_phone = modelCornerP.detect([image], verbose=1)
-
-    #get result
-    r_corner_phone = results_corner_phone[0]
-
-    # 删除冗余结果
-    delete_redu(r_corner_phone)
-
-    #获取rois
-    corner_rois = np.array(r_corner_phone['rois'])
-
-    #判断是否成功
-    if corner_rois.shape[0] != 1:
-        print("phone corner not found on the", name, "frame\n")
-        return(None)
-        
-    # display_instances(frameName, os.path.join(ROOT_DIR,'detection'), image, r_corner_phone['rois'], r_corner_phone['masks'], r_corner_phone['class_ids'],
-    #                             ['BG', 'left_up_corner'], r_corner_phone['scores'])
+    # 计算手机大小
+    phoneSize = (resultBox[0][3] - resultBox[0][1]) * (resultBox[0][2] - resultBox[0][0])
     
-    #获取手机角
-    corner_box = corner_rois[0]
-    print("原始角框: {}".format(corner_box))
-    #corner_box[y0, x0, y1, x1], phoneBox[x0, y0, x1, y1]
-    corner_box += [phoneBox[1], phoneBox[0], phoneBox[1], phoneBox[0]]
-    #change to [x0, y0, x1, y1]
-    corner_box[0], corner_box[1], corner_box[2], corner_box[3] = corner_box[1], corner_box[0], corner_box[3], corner_box[2]
-    print("恢复后角框:{}\n".format(corner_box))
-        
-    return(corner_box)
+    # 得到手机部分放大的框
+    phoneBox = get_larger_box(xy = resultBox, scale = 3, w = PILImage.size[0], h = PILImage.size[1])
+    phoneBox = phoneBox[0]
+    phoneBox = [int(i) for i in phoneBox]
+    print(" phone box: ", phoneBox) 
+    return phoneBox, phoneSize
+
 
 def loadModel():
     #加载模型
@@ -103,58 +60,42 @@ def process(videoPath, outputPath, modelPhone, modelCornerP):
     videoName = str(videoPath).split("/")[-1].split(".")[0]
 
     #切帧
-    videoToPic(videoPath, step = 2)
-
-    #加载图片名
-    frameNames = os.listdir(os.path.join(IMAGE_DIR, videoName))
-    frameNames.sort(key = lambda x: int(x[:-4])) #
+    frames = videoToPic(videoPath, step = 1, nframe = 20)
     
     condition = 0
     
-    for frameName in frameNames:
-        print('processing: {}\n'.format(frameName))
+    for i in range(len(frames) - 1):
+        print('processing: {}\n'.format(frames[i][0]))
+        frameName = frames[i][0]
+        frameName2 = frames[i+1][0]
+        CVImage = frames[i][1]
+        CVImage2 = frames[i+1][1]
+        PILImage = Image.fromarray(cv2.cvtColor(CVImage,cv2.COLOR_BGR2RGB))
+        PILImage2 = Image.fromarray(cv2.cvtColor(CVImage2, cv2.COLOR_BGR2RGB))
+        print(PILImage.size[0:2])
+        print(CVImage.shape)
 
-        PILImage = Image.open(os.path.join(IMAGE_DIR, videoName, frameName))
-        CVImage = cv2.imread(os.path.join(IMAGE_DIR, videoName, frameName))
-        # print(PILImage.size[0:2])
-        # print(CVImage.shape)
-        # break
-
-        # Run detection
-        result_img, result_box = modelPhone.detect_image(PILImage)
-
-        # 若成功则输出到文件
-        if result_box.shape[1] != 4:
-            print("phone not found on the ", frameName, "frame, process next\n")
+        phoneBox, phoneSize = detectPhone(modelPhone, frameName, PILImage)
+        phoneBox2, phoneSize2 = detectPhone(modelPhone, frameName2, PILImage2)
+        if(phoneBox == None or phoneBox2 == None):
             continue
-        if condition < 1:
-            condition = 1
-        print("成功找到手机")
-        # 打印结果个数
-        print("手机个数：", result_box.shape[0])
-        
-        # 计算手机大小
-        phoneSize = (result_box[0][3] - result_box[0][1]) * (result_box[0][2] - result_box[0][0])
-        
-        # 得到手机部分放大的框
-        phone_box = get_larger_box(xy = result_box, scale = 3, w = PILImage.size[0], h = PILImage.size[1])
-        phone_box = phone_box[0]
-        phone_box = [int(i) for i in phone_box]
-        print(" phone box: ", phone_box)
         
         # 得到剪切的手机部分
-        croppedCV = CVImage[phone_box[1] : phone_box[3], phone_box[0] : phone_box[2]]
+        croppedCV = CVImage[phoneBox[1] : phoneBox[3], phoneBox[0] : phoneBox[2]]
         croppedPIL = Image.fromarray(cv2.cvtColor(croppedCV,cv2.COLOR_BGR2RGB))  
+        croppedCV2 = CVImage[phoneBox2[1] : phoneBox2[3], phoneBox2[0] : phoneBox2[2]]
+        croppedPIL2 = Image.fromarray(cv2.cvtColor(croppedCV2,cv2.COLOR_BGR2RGB))
         
         # 将截取的部分输入handposeimage识别指尖
-        finger_box = detectFinger(image = croppedCV, name = frameName, phoneBox = phone_box)
+        finger_box = detectFinger(image = [croppedCV, croppedCV2], name = frameName, phoneBox = phoneBox)
+        print("finger box: {}".format(finger_box))
         if(finger_box is None):
             continue
         if(condition < 2):
             condition = 2
         
         # 将截取的部分输入mask-rcnn corner_phone模型识别手机角
-        corner_box = detectCornerYOLO(ModelCornerP = modelCornerP, image = croppedPIL, name = frameName, phoneBox = phone_box)
+        corner_box = detectCornerYOLO(ModelCornerP = modelCornerP, image = croppedPIL, name = frameName, phoneBox = phoneBox)
         if(corner_box is not None):
             condition = 3
             

@@ -3,6 +3,7 @@ import cv2
 import time
 import sys
 import os
+import math
 import shutil
 import pdb
 
@@ -42,6 +43,7 @@ def videoToPic(videoPath, outputPath = "/home/user/zy/attack-on-pattern-pin/dete
     
     i = 1
     breakFrame = 2 + (nframe - 1) * step
+    frames = []
     while is_opened:
         # 判断结束帧号，到达则停止
         if i == breakFrame:
@@ -54,12 +56,14 @@ def videoToPic(videoPath, outputPath = "/home/user/zy/attack-on-pattern-pin/dete
         if i % step == 0 and flag:
             filename = os.path.join(outputPath, videoName, (str(i) + '.png'))
             print(filename)
-            cv2.imwrite(filename, frame)
+            # cv2.imwrite(filename, frame)
+            frames.append((str(i) + ".png", frame))
             
         time.sleep(0.01)
         i = i + 1
         
     print("get frame done!\n")
+    return frames
     
 def bbox_to_cv2(bbox):
     left =bbox[0]
@@ -110,7 +114,6 @@ def get_larger_box(xy, scale, w, h):
     right_y = [item if item <= h else h for item in right_y]
     right_x = [item if item <= w else w for item in right_x]
     return np.stack((left_x, left_y, right_x, right_y), axis = 1) # w, h
-print(get_larger_box(xy = np.array([[5, 5, 20, 40]]), scale = 3, w = 100, h = 100))
 
 def handPoseImage(image):
     protoFile = "/home/user/zy/attack-on-pattern-pin/detection/hand/pose_deploy.prototxt"
@@ -157,38 +160,93 @@ def handPoseImage(image):
         if prob > threshold :   
             cv2.circle(frameCopy, (int(point[0]), int(point[1])), 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
             cv2.putText(frameCopy, "{}".format(i), (int(point[0]), int(point[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA) 
-            # my code
-            if i in [4, 8, 9, 10]:
-                point = list(point)
-                point.append(i)
-                print ("找到第{}个指头，坐标为{}.".format(i, point))
-                cv2.imwrite(os.path.join("/home/user/zy/attack-on-pattern-pin/detection/", "finger-skeleton.jpg"), frameCopy)
-                return (point)
+           
             # Add the point to the list if the probability is greater than the threshold
-            points.append((int(point[0]), int(point[1])))
+            points.append([i, int(point[0]), int(point[1])])
         else :
             points.append(None)
+    return (points)
 
-    # # Draw Skeleton
-    # for pair in POSE_PAIRS:
-    #     partA = pair[0]
-    #     partB = pair[1]
+def getMovingFinger(fPosition):
+    fPosition = np.array(fPosition)
+    maxLen = 0
+    result = None
+    for i in range(np.size(fPosition, 1)):
+        if(fPosition[0][i] != None and fPosition[1][i] != None):
+            #计算当前距离
+            len = math.pow(fPosition[0][i][1] - fPosition[1][i][1], 2) + math.pow(fPosition[0][i][2] - fPosition[1][i][2], 2)
+            if(len > maxLen):
+                maxLen = len
+                result = fPosition[0][i]
+    return result
 
-    #     if points[partA] and points[partB]:
-    #         cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
-    #         cv2.circle(frame, points[partA], 8, (0, 0, 255), thickness=-1, lineType=cv2.FILLED)
-    #         cv2.circle(frame, points[partB], 8, (0, 0, 255), thickness=-1, lineType=cv2.FILLED)
+def detectFinger(image, phoneBox, name):
+    fPosition = [handPoseImage(image[0]), handPoseImage(image[1])]
+    print("fPosition: {}".format(fPosition))
+    
+    fPosition = getMovingFinger(fPosition)
+    # sys.exit()
+    #判断是否成功
+    if(fPosition != None):
+        #计算原始坐标 finger Position[x0, y0, type], phone_box[x0, y0, x0, y0]
+        left = fPosition[1] + phoneBox[0] -13
+        up = fPosition[2] + phoneBox[1] - 13
+        right = fPosition[1] + phoneBox[0] + 13
+        bottom = fPosition[2] + phoneBox[1] + 13
+        finger_box = [left, up, right, bottom]
+        return np.array(finger_box)
+    else:
+        print("handpose fail on the " , name, "frame, process next\n")
+        return(None)    
+    
+def detectCornerYOLO(ModelCornerP, image, phoneBox, name):
+    # Run detection
+    __, result_box = ModelCornerP.detect_image(image)
 
+    if result_box.shape[1] != 4:
+        print("phone not found on the ", name, "frame\n")
+        return(None)
+    #获取手机角
+    corner_box = result_box[0]
+    print("原始角框: {}".format(corner_box))
+    #corner_box[x0, y0, x1, y1], phoneBox[x0, y0, x1, y1]
+    corner_box += [phoneBox[0], phoneBox[1], phoneBox[0], phoneBox[1]]
+    #change to [x0, y0, x1, y1]
+    print("恢复后角框:{}\n".format(corner_box))
+        
+    return(corner_box)
 
-    # cv2.imshow('Output-Keypoints', frameCopy)
-    # cv2.imshow('Output-Skeleton', frame)
+def detectCornerMask(modelCornerP, image, phoneBox, name):
+    # Run detection
+    results_corner_phone = modelCornerP.detect([image], verbose=1)
 
+    #get result
+    r_corner_phone = results_corner_phone[0]
 
-    cv2.imwrite(os.path.join("/home/user/zy/attack-on-pattern-pin/detection/", 'Output-Keypoints.jpg'), frameCopy)
-    # cv2.imwrite('Output-Skeleton.jpg', frame)
+    # 删除冗余结果
+    delete_redu(r_corner_phone)
 
-    print("Total time taken : {:.3f}".format(time.time() - t))
-    return (None)
+    #获取rois
+    corner_rois = np.array(r_corner_phone['rois'])
+
+    #判断是否成功
+    if corner_rois.shape[0] != 1:
+        print("phone corner not found on the", name, "frame\n")
+        return(None)
+        
+    # display_instances(frameName, os.path.join(ROOT_DIR,'detection'), image, r_corner_phone['rois'], r_corner_phone['masks'], r_corner_phone['class_ids'],
+    #                             ['BG', 'left_up_corner'], r_corner_phone['scores'])
+    
+    #获取手机角
+    corner_box = corner_rois[0]
+    print("原始角框: {}".format(corner_box))
+    #corner_box[y0, x0, y1, x1], phoneBox[x0, y0, x1, y1]
+    corner_box += [phoneBox[1], phoneBox[0], phoneBox[1], phoneBox[0]]
+    #change to [x0, y0, x1, y1]
+    corner_box[0], corner_box[1], corner_box[2], corner_box[3] = corner_box[1], corner_box[0], corner_box[3], corner_box[2]
+    print("恢复后角框:{}\n".format(corner_box))
+        
+    return(corner_box)
 
 
 def display_instances(file, output_path, image, boxes, masks, class_ids, class_names,
