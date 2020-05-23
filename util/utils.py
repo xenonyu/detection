@@ -3,6 +3,7 @@ import cv2
 import time
 import sys
 import os
+import math
 import shutil
 import pdb
 
@@ -42,6 +43,7 @@ def videoToPic(videoPath, outputPath = "/home/user/zy/attack-on-pattern-pin/dete
     
     i = 1
     breakFrame = 2 + (nframe - 1) * step
+    frames = []
     while is_opened:
         # 判断结束帧号，到达则停止
         if i == breakFrame:
@@ -54,12 +56,14 @@ def videoToPic(videoPath, outputPath = "/home/user/zy/attack-on-pattern-pin/dete
         if i % step == 0 and flag:
             filename = os.path.join(outputPath, videoName, (str(i) + '.png'))
             print(filename)
-            cv2.imwrite(filename, frame)
+            # cv2.imwrite(filename, frame)
+            frames.append((str(i) + ".png", frame))
             
         time.sleep(0.01)
         i = i + 1
         
     print("get frame done!\n")
+    return frames
     
 def bbox_to_cv2(bbox):
     left =bbox[0]
@@ -90,6 +94,11 @@ def exportTxt(frameName, videoName, cornerBox, fingerBox, outputPath, phoneSize)
     with open(os.path.join(outputPath, videoName, "box.txt"), "w") as f:
         f.write("{0} {1} {2} {3}".format(frameNum, phoneSize, cornerBox, fingerBox))
         
+def get_larger_boxs(xys, scale, w, h):
+
+    for i in range(len(xys)):
+        xys[i] = get_larger_box(xys[i], scale, w, h)
+    return(xys)
 def get_larger_box(xy, scale, w, h):
     """
     Args:
@@ -100,22 +109,111 @@ def get_larger_box(xy, scale, w, h):
     """
     cx_cy = np.concatenate(((xy[:, 2:] + xy[:, :2]) / 2,  # c_x, c_y
                       (xy[:, 2:] - xy[:, :2]) * scale), axis = 1) # w, h
-    
-    left_y = cx_cy[:, 1] - 0.5 * cx_cy[:, 3]
-    left_x = cx_cy[:, 0] - 0.5 * cx_cy[:, 2]
-    right_y = cx_cy[:, 1] + 0.5 * cx_cy[:, 3]
-    right_x = cx_cy[:, 0] + 0.5 * cx_cy[:, 2]
-    left_y = [item if item > 0 else 0 for item in left_y]
-    left_x = [item if item > 0 else 0 for item in left_x]
-    right_y = [item if item <= h else h for item in right_y]
-    right_x = [item if item <= w else w for item in right_x]
+    # 将直接放大scale倍改为仅放大小边长度
+    min = np.array([cx_cy[:, 3][i] if(cx_cy[:, 3][i] < cx_cy[:, 2][i]) else cx_cy[:, 2][i] for i in range(len(cx_cy[:, 3]))], dtype=np.int16)
+    left_y = cx_cy[:, 1] - min * 0.5
+    left_x = cx_cy[:, 0] - 0.5 * min
+    right_y = cx_cy[:, 1] + 0.5 * min
+    right_x = cx_cy[:, 0] + 0.5 * min
+    left_y = np.array([item if item > 0 else 0 for item in left_y], dtype=np.int16)
+    left_x = np.array([item if item > 0 else 0 for item in left_x], dtype=np.int16)
+    right_y = np.array([item if item <= h else h for item in right_y], dtype=np.int16)
+    right_x = np.array([item if item <= w else w for item in right_x], dtype=np.int16)
     return np.stack((left_x, left_y, right_x, right_y), axis = 1) # w, h
-print(get_larger_box(xy = np.array([[5, 5, 20, 40]]), scale = 3, w = 100, h = 100))
+
+# if __name__ == "__main__":
+#     a = np.array([[10, 15, 20, 20]], dtype = np.int16)
+#     print(get_larger_box(a, 3, 100, 100))
+
+def zeroNear(probMap, maxPoint, threshold):
+    zeroWidth = 50
+    # width = probMap.shape[1]
+    # height = porbMap.shape[0]
+    left = maxPoint[1] - zeroWidth // 2
+    up = maxPoint[0] - zeroWidth // 2
+    right = maxPoint[1] + zeroWidth // 2
+    bottom = maxPoint[0] + zeroWidth // 2
+    print(probMap[maxPoint[1], maxPoint[0]])
+    # sys.exit()
+    print(left)
+    print(right)
+    probMap[left:right, up:bottom].fill(0)
+    # print(probMap[up:bottom, left:right])
+    return (probMap)
 
 def handPoseImage(image):
     protoFile = "/home/user/zy/attack-on-pattern-pin/detection/hand/pose_deploy.prototxt"
     weightsFile = "/home/user/zy/attack-on-pattern-pin/detection/hand/pose_iter_102000.caffemodel"
     nPoints = 22
+    priority = [8, 7, 6, 4, 3, 5, 9, 13, 12, 11, 10, 0, 1 , 2, 14, 15, 16, 17, 18, 19, 20]
+    POSE_PAIRS = [ [0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20] ]
+    net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
+    # frame = cv2.imread(imagePath)
+    frame = image
+    frameCopy = np.copy(frame)
+    frameWidth = frame.shape[1]
+    frameHeight = frame.shape[0]
+    aspect_ratio = frameWidth/frameHeight
+
+    threshold = 0.3
+
+    t = time.time()
+    # input image dimensions for the network
+    inHeight = 368
+    inWidth = int(((aspect_ratio*inHeight)*8)//8)
+    inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight), (0, 0, 0), swapRB=False, crop=False)
+
+    net.setInput(inpBlob)
+
+    output = net.forward()
+    print("time taken by handpose : {:.3f}".format(time.time() - t))
+
+    # Empty list to store the detected keypoints
+    points = []
+    
+
+    # i = 4 大拇指尖
+    # i = 8 食指尖
+    # i = 9 食指中
+    # i = 10 食指后
+    for i in priority[0:11]:
+        
+        # confidence map of corresponding body's part.
+        probMap = output[0, i, :, :]
+        probMap = cv2.resize(probMap, (frameWidth, frameHeight))
+        
+         # Find global maxima of the probMap.
+        __, firstProb, __, firstPoint = cv2.minMaxLoc(probMap)
+        
+        secondProbMap = zeroNear(probMap, firstPoint, threshold)
+        __, secondProb, __, secondPoint = cv2.minMaxLoc(secondProbMap)
+        # a = input("next")
+        
+        
+        if firstProb > threshold :
+            # cv2.circle(frameCopy, (int(firstPoint[0]), int(firstPoint[1])), 4, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+            # cv2.putText(frameCopy, "{}".format(i), (int(firstPoint[0]), int(firstPoint[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
+
+            # Add the point to the list if the probability is greater than the threshold
+            points.append([firstPoint[0], firstPoint[1], i, firstProb])
+        else :
+            points.append([0, 0, 0, 0])      
+            
+        if( secondProb > threshold):
+            # cv2.circle(frameCopy, (int(secondPoint[0]), int(secondPoint[1])), 4, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+            # cv2.putText(frameCopy, "{}".format(i), (int(secondPoint[0]), int(secondPoint[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
+
+            # Add the point to the list if the probability is greater than the threshold
+            points.append([secondPoint[0], secondPoint[1], i, secondProb])
+        else :
+            points.append([0, 0, 0, 0])
+    return (points)
+
+def backuphandPoseImage(image):
+    protoFile = "/home/user/zy/attack-on-pattern-pin/detection/hand/pose_deploy.prototxt"
+    weightsFile = "/home/user/zy/attack-on-pattern-pin/detection/hand/pose_iter_102000.caffemodel"
+    nPoints = 22
+    priority = [8, 7, 6, 4, 3, 5, 9, 13, 12, 11, 10, 0, 1 , 2, 14, 15, 16, 17, 18, 19, 20]
     POSE_PAIRS = [ [0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20] ]
     net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
     # frame = cv2.imread(imagePath)
@@ -140,6 +238,7 @@ def handPoseImage(image):
 
     # Empty list to store the detected keypoints
     points = []
+    
 
     # i = 4 大拇指尖
     # i = 8 食指尖
@@ -150,45 +249,112 @@ def handPoseImage(image):
         # confidence map of corresponding body's part.
         probMap = output[0, i, :, :]
         probMap = cv2.resize(probMap, (frameWidth, frameHeight))
+        
+         # Find global maxima of the probMap.
+        __, firstProb, __, firstPoint = cv2.minMaxLoc(probMap)
+        
+        secondProbMap = zeroNear(probMap, firstPoint, threshold)
+        __, secondProb, __, secondPoint = cv2.minMaxLoc(secondProbMap)
+        # a = input("next")
+        
+        if( secondProb > threshold):
+            cv2.circle(frameCopy, (int(secondPoint[0]), int(secondPoint[1])), 4, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+            cv2.putText(frameCopy, "{}".format(i), (int(secondPoint[0]), int(secondPoint[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
 
-        # Find global maxima of the probMap.
-        minVal, prob, minLoc, point = cv2.minMaxLoc(probMap)
-
-        if prob > threshold :   
-            cv2.circle(frameCopy, (int(point[0]), int(point[1])), 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
-            cv2.putText(frameCopy, "{}".format(i), (int(point[0]), int(point[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA) 
-            # my code
-            if i in [4, 8, 9, 10]:
-                point = list(point)
-                point.append(i)
-                print ("找到第{}个指头，坐标为{}.".format(i, point))
-                cv2.imwrite(os.path.join("/home/user/zy/attack-on-pattern-pin/detection/", "finger-skeleton.jpg"), frameCopy)
-                return (point)
             # Add the point to the list if the probability is greater than the threshold
-            points.append((int(point[0]), int(point[1])))
+            points.append([int(secondPoint[0]), int(secondPoint[1]), i])
         else :
-            points.append(None)
+            points.append([None])
+            
+        if firstProb > threshold :
+            cv2.circle(frameCopy, (int(firstPoint[0]), int(firstPoint[1])), 4, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+            cv2.putText(frameCopy, "{}".format(i), (int(firstPoint[0]), int(firstPoint[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
 
-    # # Draw Skeleton
-    # for pair in POSE_PAIRS:
-    #     partA = pair[0]
-    #     partB = pair[1]
+            # Add the point to the list if the probability is greater than the threshold
+            points.append([int(firstPoint[0]), int(firstPoint[1]), i ])
+        else :
+            points.append(None)    
 
-    #     if points[partA] and points[partB]:
-    #         cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
-    #         cv2.circle(frame, points[partA], 8, (0, 0, 255), thickness=-1, lineType=cv2.FILLED)
-    #         cv2.circle(frame, points[partB], 8, (0, 0, 255), thickness=-1, lineType=cv2.FILLED)
-
-
-    # cv2.imshow('Output-Keypoints', frameCopy)
-    # cv2.imshow('Output-Skeleton', frame)
+    return (points)
 
 
-    cv2.imwrite(os.path.join("/home/user/zy/attack-on-pattern-pin/detection/", 'Output-Keypoints.jpg'), frameCopy)
-    # cv2.imwrite('Output-Skeleton.jpg', frame)
+'''
+@return
+    [22, 6] 
+'''
+def resetFingerPosition(fPositions, phoneBox):
+    rFPositions = np.array(np.zeros(6))
+    for fPosition in fPositions:
+        if(np.all(fPosition) != 0):
+            # change [cx, cy] to [lx, ly, rx, ry] and add reset
+            left = fPosition[0] + phoneBox[0] -13
+            up = fPosition[1] + phoneBox[1] - 13
+            right = fPosition[0] + phoneBox[0] + 13
+            bottom = fPosition[1] + phoneBox[1] + 13
+            rFPositions = np.vstack((rFPositions, [left, up, right, bottom, fPosition[2], fPosition[3]]))
+        else:
+            rFPositions = np.vstack((rFPositions, [0, 0, 0, 0, 0, 0]))
+    rFPositions = np.delete(rFPositions, 0, axis = 0)
+    return (rFPositions)
 
-    print("Total time taken : {:.3f}".format(time.time() - t))
-    return (None)
+def detectFinger(image, phoneBox, name):
+    fPosition = handPoseImage(image)
+    # print(fPosition)
+    # print(fPosition[0])
+    rFPosition = resetFingerPosition(fPosition, phoneBox)
+    
+    # print("rFPosition: {}".format(rFPosition))
+    # print('shape: {}'.format(np.array(rFPosition).shape))
+    return (rFPosition)   
+    
+def detectCornerYOLO(ModelCornerP, image, phoneBox, name):
+    # Run detection
+    __, result_box = ModelCornerP.detect_image(image)
+
+    if result_box.shape[1] != 4:
+        print("phone not found on the ", name, "frame\n")
+        return(None)
+    #获取手机角
+    corner_box = result_box[0]
+    print("原始角框: {}".format(corner_box))
+    #corner_box[x0, y0, x1, y1], phoneBox[x0, y0, x1, y1]
+    corner_box += [phoneBox[0], phoneBox[1], phoneBox[0], phoneBox[1]]
+    #change to [x0, y0, x1, y1]
+    print("恢复后角框:{}\n".format(corner_box))
+        
+    return(corner_box)
+
+def detectCornerMask(modelCornerP, image, phoneBox, name):
+    # Run detection
+    results_corner_phone = modelCornerP.detect([image], verbose=1)
+
+    #get result
+    r_corner_phone = results_corner_phone[0]
+
+    # 删除冗余结果
+    delete_redu(r_corner_phone)
+
+    #获取rois
+    corner_rois = np.array(r_corner_phone['rois'])
+
+    #判断是否成功
+    if corner_rois.shape[0] != 1:
+        print("phone corner not found on the", name, "frame\n")
+        return(None)
+        
+    # display_instances(frameName, os.path.join(ROOT_DIR,'detection'), image, r_corner_phone['rois'], r_corner_phone['masks'], r_corner_phone['class_ids'],
+    #                             ['BG', 'left_up_corner'], r_corner_phone['scores'])
+    
+    #获取手机角
+    corner_box = corner_rois[0]
+    print("原始角框: {}".format(corner_box))
+    #corner_box[y0, x0, y1, x1], phoneBox[x0, y0, x1, y1]
+    corner_box += [phoneBox[1], phoneBox[0], phoneBox[1], phoneBox[0]]
+    #change to [x0, y0, x1, y1]
+    corner_box[0], corner_box[1], corner_box[2], corner_box[3] = corner_box[1], corner_box[0], corner_box[3], corner_box[2]
+    print("恢复后角框:{}\n".format(corner_box))
+        
+    return(corner_box)
 
 
 def display_instances(file, output_path, image, boxes, masks, class_ids, class_names,
@@ -309,3 +475,16 @@ def apply_mask(image, mask, color, alpha=0.5):
                                   (1 - alpha) + alpha * color[c] * 255,
                                   image[:, :, c])
     return image
+
+def getMovingFinger(fPosition):
+    fPosition = np.array(fPosition)
+    maxLen = 0
+    result = None
+    for i in range(np.size(fPosition, 1)):
+        if(fPosition[0][i] != None and fPosition[1][i] != None):
+            #计算当前距离
+            len = math.pow(fPosition[0][i][1] - fPosition[1][i][1], 2) + math.pow(fPosition[0][i][2] - fPosition[1][i][2], 2)
+            if(len > maxLen):
+                maxLen = len
+                result = fPosition[0][i]
+    return result

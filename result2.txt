@@ -1,0 +1,999 @@
+processing video SSSM-000002...
+get at frame: 4
+finger box: [166 279 192 305].
+ condition: 2.
+
+processing video SSSM-000003...
+get at frame: 0
+finger box: [325 226 351 252].
+ condition: 2.
+
+processing video SSSM-000005...
+get at frame: 17
+finger box: [154 268 180 294].
+ condition: 2.
+
+processing video SSSM-000009...
+get at frame: 0
+finger box: [265 344 291 370].
+ condition: 2.
+
+processing video SSSM-000010...
+get at frame: 6
+finger box: [219 304 245 330].
+ condition: 2.
+
+processing video SSSM-000015...
+get at frame: 0
+finger box: [336 244 362 270].
+ condition: 2.
+
+processing video SSSM-000020...
+get at frame: 0
+finger box: [234 231 260 257].
+ condition: 2.
+
+processing video SSSM-000021...
+get at frame: 0
+finger box: [323 255 349 281].
+ condition: 2.
+
+processing video SSSM-000023...
+get at frame: 0
+finger box: [224 369 250 395].
+ condition: 2.
+
+processing video SSSM-000025...
+get at frame: 4
+finger box: [248 221 274 247].
+ condition: 2.
+
+processing video SSSM-000026...
+get at frame: 2
+finger box: [157 304 183 330].
+ condition: 2.
+
+processing video SSSM-000027...
+get at frame: 0
+finger box: [116 326 142 352].
+ condition: 2.
+
+processing video SSSM-000029...
+get at frame: 3
+finger box: [220 362 246 388].
+ condition: 2.
+
+processing video SSSM-000030...
+get at frame: 5
+finger box: [217 332 243 358].
+ condition: 2.
+
+processing video SSSM-000032...
+get at frame: 0
+finger box: [157 317 183 343].
+ condition: 2.
+
+processing video SSSM-000035...
+get at frame: 0
+finger box: [403 243 429 269].
+ condition: 2.
+
+processing video SSSM-000038...
+get at frame: 6
+finger box: [156 393 182 419].
+ condition: 2.
+
+processing video SSSM-000039...
+get at frame: 12
+finger box: [386 349 412 375].
+ condition: 2.
+
+processing video SSSM-000045...
+get at frame: 7
+finger box: [250 169 276 195].
+ condition: 2.
+
+processing video SSSM-000050...
+get at frame: 0
+finger box: [261 386 287 412].
+ condition: 2.
+
+processing video SSSM-000056...
+get at frame: 7
+finger box: [335 399 361 425].
+ condition: 2.
+
+processing video SSSM-000057...
+get at frame: 10
+finger box: [279 381 305 407].
+ condition: 2.
+
+processing video SSSM-000063...
+get at frame: 5
+finger box: [348 369 374 395].
+ condition: 2.
+
+processing video SSSM-000065...
+get at frame: 16
+finger box: [272 292 298 318].
+ condition: 2.
+
+processing video SSSM-000074...
+get at frame: 7
+finger box: [208 321 234 347].
+ condition: 2.
+
+processing video SSSM-000079...
+get at frame: 13
+finger box: [139 360 165 386].
+ condition: 2.
+
+processing video SSSM-000080...
+get at frame: 11
+finger box: [263 234 289 260].
+ condition: 2.
+
+processing video SSSM-000083...
+get at frame: 7
+finger box: [336 394 362 420].
+ condition: 2.
+
+processing video SSSM-000085...
+get at frame: 4
+finger box: [166 237 192 263].
+ condition: 2.
+
+processing video SSSM-000086...
+get at frame: 15
+finger box: [228 270 254 296].
+ condition: 2.
+
+processing video SSSM-000087...
+get at frame: 1
+finger box: [423 375 449 401].
+ condition: 2.
+
+processing video SSSM-000091...
+get at frame: 14
+finger box: [111 355 137 381].
+ condition: 2.
+
+processing video SSSM-000093...
+get at frame: 11
+finger box: [456 464 482 490].
+ condition: 2.
+
+processing video SSSM-000095...
+get at frame: 14
+finger box: [346 370 372 396].
+ condition: 2.
+
+processing video SSSM-000096...
+get at frame: 3
+finger box: [236 488 262 514].
+ condition: 2.
+
+processing video SSSM-000098...
+get at frame: 0
+finger box: [305 521 331 547].
+ condition: 2.
+
+processing video SSSM-000099...
+get at frame: 5
+finger box: [407 497 433 523].
+ condition: 2.
+
+processing video SSSM-000102...
+get at frame: 15
+finger box: [316 480 342 506].
+ condition: 2.
+
+processing video SSSM-000103...
+get at frame: 8
+finger box: [119 503 145 529].
+ condition: 2.
+
+processing video SSSM-000104...
+get at frame: 0
+finger box: [317 514 343 540].
+ condition: 2.
+
+processing video SSSM-000105...
+get at frame: 0
+finger box: [416 549 442 575].
+ condition: 2.
+
+processing video SSSM-000107...
+get at frame: 3
+finger box: [280 523 306 549].
+ condition: 2.
+
+processing video SSSM-000111...
+get at frame: 13
+finger box: [389 441 415 467].
+ condition: 2.
+
+processing video SSSM-000113...
+get at frame: 2
+finger box: [325 543 351 569].
+ condition: 2.
+
+processing video SSSM-000116...
+get at frame: 2
+finger box: [297 456 323 482].
+ condition: 2.
+
+processing video SSSM-000117...
+get at frame: 0
+finger box: [390 417 416 443].
+ condition: 2.
+
+processing video SSSM-000122...
+get at frame: 0
+finger box: [174 360 200 386].
+ condition: 2.
+
+processing video SSSM-000123...
+get at frame: 0
+finger box: [294 414 320 440].
+ condition: 2.
+
+processing video SSSM-000126...
+get at frame: 7
+finger box: [346 509 372 535].
+ condition: 2.
+
+processing video SSSM-000127...
+get at frame: 2
+finger box: [1164  978 1190 1004].
+ condition: 2.
+
+processing video SSSM-000128...
+get at frame: 1
+finger box: [1147  613 1173  639].
+ condition: 2.
+
+processing video SSSM-000129...
+get at frame: 0
+finger box: [1231  240 1257  266].
+ condition: 2.
+
+processing video SSSM-000130...
+get at frame: 0
+finger box: [1140  942 1166  968].
+ condition: 2.
+
+processing video SSSM-000131...
+get at frame: 0
+finger box: [1128  518 1154  544].
+ condition: 2.
+
+processing video SSSM-000133...
+get at frame: 0
+finger box: [1249  947 1275  973].
+ condition: 2.
+
+processing video SSSM-000134...
+get at frame: 0
+finger box: [1192  610 1218  636].
+ condition: 2.
+
+processing video SSSM-000137...
+get at frame: 2
+finger box: [1262  652 1288  678].
+ condition: 2.
+
+processing video SSSM-000139...
+get at frame: 0
+finger box: [1359  934 1385  960].
+ condition: 2.
+
+processing video SSSM-000140...
+get at frame: 2
+finger box: [1072  593 1098  619].
+ condition: 2.
+
+processing video SSSM-000141...
+get at frame: 0
+finger box: [1111  271 1137  297].
+ condition: 2.
+
+processing video SSSM-000142...
+get at frame: 0
+finger box: [1120  866 1146  892].
+ condition: 2.
+
+processing video SSSM-000143...
+get at frame: 0
+finger box: [1065  670 1091  696].
+ condition: 2.
+
+processing video SSSM-000144...
+get at frame: 0
+finger box: [1140  243 1166  269].
+ condition: 2.
+
+processing video SSSM-000145...
+get at frame: 0
+finger box: [1078  883 1104  909].
+ condition: 2.
+
+processing video SSSM-000146...
+get at frame: 5
+finger box: [1151  457 1177  483].
+ condition: 2.
+
+processing video SSSM-000147...
+get at frame: 0
+finger box: [1081  347 1107  373].
+ condition: 2.
+
+processing video SSSM-000148...
+get at frame: 15
+finger box: [1193  891 1219  917].
+ condition: 2.
+
+processing video SSSM-000150...
+get at frame: 9
+finger box: [943 389 969 415].
+ condition: 2.
+
+processing video SSSM-000151...
+get at frame: 0
+finger box: [1094  774 1120  800].
+ condition: 2.
+
+processing video SSSM-000152...
+get at frame: 0
+finger box: [1091  541 1117  567].
+ condition: 2.
+
+processing video SSSM-000153...
+get at frame: 0
+finger box: [1027  261 1053  287].
+ condition: 2.
+
+processing video SSSM-000154...
+get at frame: 5
+finger box: [1021 1029 1047 1055].
+ condition: 2.
+
+processing video SSSM-000155...
+get at frame: 12
+finger box: [1188  448 1214  474].
+ condition: 2.
+
+processing video SSSM-000156...
+get at frame: 3
+finger box: [1070  233 1096  259].
+ condition: 2.
+
+processing video SSSM-000157...
+get at frame: 0
+finger box: [1183  871 1209  897].
+ condition: 2.
+
+processing video SSSM-000158...
+get at frame: 0
+finger box: [1002  625 1028  651].
+ condition: 2.
+
+processing video SSSM-000159...
+get at frame: 5
+finger box: [1177  173 1203  199].
+ condition: 2.
+
+processing video SSSM-000160...
+get at frame: 0
+finger box: [1061  859 1087  885].
+ condition: 2.
+
+processing video SSSM-000161...
+get at frame: 0
+finger box: [1052  561 1078  587].
+ condition: 2.
+
+processing video SSSM-000162...
+get at frame: 0
+finger box: [1083  219 1109  245].
+ condition: 2.
+
+processing video SSSM-000163...
+get at frame: 0
+finger box: [1047  900 1073  926].
+ condition: 2.
+
+processing video SSSM-000164...
+get at frame: 0
+finger box: [956 576 982 602].
+ condition: 2.
+
+processing video SSSM-000165...
+get at frame: 0
+finger box: [1092  215 1118  241].
+ condition: 2.
+
+processing video SSSM-000166...
+get at frame: 0
+finger box: [1008  984 1034 1010].
+ condition: 2.
+
+processing video SSSM-000167...
+get at frame: 0
+finger box: [1042  537 1068  563].
+ condition: 2.
+
+processing video SSSM-000168...
+get at frame: 10
+finger box: [1044  227 1070  253].
+ condition: 2.
+
+processing video SSSM-000169...
+get at frame: 0
+finger box: [938 933 964 959].
+ condition: 2.
+
+processing video SSSM-000170...
+get at frame: 0
+finger box: [1007  491 1033  517].
+ condition: 2.
+
+processing video SSSM-000171...
+get at frame: 10
+finger box: [1021  165 1047  191].
+ condition: 2.
+
+processing video SSSM-000172...
+get at frame: 0
+finger box: [834 957 860 983].
+ condition: 2.
+
+processing video SSSM-000173...
+get at frame: 0
+finger box: [953 491 979 517].
+ condition: 2.
+
+processing video SSSM-000174...
+get at frame: 0
+finger box: [1010  175 1036  201].
+ condition: 2.
+
+processing video SSSM-000175...
+get at frame: 0
+finger box: [ 987  767 1013  793].
+ condition: 2.
+
+processing video SSSM-000176...
+get at frame: 0
+finger box: [1004  456 1030  482].
+ condition: 2.
+
+processing video SSSM-000177...
+get at frame: 0
+finger box: [1059  207 1085  233].
+ condition: 2.
+
+processing video SSSM-000178...
+get at frame: 3
+finger box: [919 967 945 993].
+ condition: 2.
+
+processing video SSSM-000179...
+get at frame: 0
+finger box: [872 646 898 672].
+ condition: 2.
+
+processing video SSSM-000181...
+get at frame: 0
+finger box: [897 753 923 779].
+ condition: 2.
+
+processing video SSSM-000182...
+get at frame: 0
+finger box: [757 481 783 507].
+ condition: 2.
+
+processing video SSSM-000183...
+get at frame: 0
+finger box: [823 156 849 182].
+ condition: 2.
+
+processing video SSSM-000185...
+get at frame: 2
+finger box: [1254  484 1280  510].
+ condition: 2.
+
+processing video SSSM-000187...
+get at frame: 0
+finger box: [1345  901 1371  927].
+ condition: 2.
+
+processing video SSSM-000188...
+get at frame: 2
+finger box: [1219  624 1245  650].
+ condition: 2.
+
+processing video SSSM-000189...
+get at frame: 5
+finger box: [1308  235 1334  261].
+ condition: 2.
+
+processing video SSSM-000190...
+get at frame: 1
+finger box: [671 535 697 561].
+ condition: 2.
+
+processing video SSSM-000191...
+get at frame: 0
+finger box: [1036  638 1062  664].
+ condition: 2.
+
+processing video SSSM-000193...
+get at frame: 0
+finger box: [1301  895 1327  921].
+ condition: 2.
+
+processing video SSSM-000194...
+get at frame: 0
+finger box: [1126  601 1152  627].
+ condition: 2.
+
+processing video SSSM-000195...
+get at frame: 7
+finger box: [1111  353 1137  379].
+ condition: 2.
+
+processing video SSSM-000196...
+get at frame: 19
+finger box: [1306  872 1332  898].
+ condition: 2.
+
+processing video SSSM-000197...
+get at frame: 0
+finger box: [1181  577 1207  603].
+ condition: 2.
+
+processing video SSSM-000198...
+get at frame: 0
+finger box: [1299  174 1325  200].
+ condition: 2.
+
+processing video SSSM-000199...
+get at frame: 4
+finger box: [539 664 565 690].
+ condition: 2.
+
+processing video SSSM-000200...
+get at frame: 0
+finger box: [1173  671 1199  697].
+ condition: 2.
+
+processing video SSSM-000201...
+get at frame: 1
+finger box: [1225  259 1251  285].
+ condition: 2.
+
+processing video SSSM-000202...
+get at frame: 3
+finger box: [1079  819 1105  845].
+ condition: 2.
+
+processing video SSSM-000203...
+get at frame: 10
+finger box: [887 393 913 419].
+ condition: 2.
+
+processing video SSSM-000204...
+get at frame: 4
+finger box: [1023  175 1049  201].
+ condition: 2.
+
+processing video SSSM-000205...
+get at frame: 0
+finger box: [1028  861 1054  887].
+ condition: 2.
+
+processing video SSSM-000206...
+get at frame: 3
+finger box: [ 985  358 1011  384].
+ condition: 2.
+
+processing video SSSM-000207...
+get at frame: 12
+finger box: [1095   90 1121  116].
+ condition: 2.
+
+processing video SSSM-000208...
+get at frame: 12
+finger box: [1246  825 1272  851].
+ condition: 2.
+
+processing video SSSM-000209...
+get at frame: 0
+finger box: [1044  602 1070  628].
+ condition: 2.
+
+processing video SSSM-000210...
+get at frame: 8
+finger box: [1229  163 1255  189].
+ condition: 2.
+
+processing video SSSM-000211...
+get at frame: 0
+finger box: [ 975  928 1001  954].
+ condition: 2.
+
+processing video SSSM-000212...
+get at frame: 0
+finger box: [826 587 852 613].
+ condition: 2.
+
+processing video SSSM-000213...
+get at frame: 0
+finger box: [734 305 760 331].
+ condition: 2.
+
+processing video SSSM-000214...
+get at frame: 1
+finger box: [1006  927 1032  953].
+ condition: 2.
+
+processing video SSSM-000215...
+get at frame: 12
+finger box: [810 630 836 656].
+ condition: 2.
+
+processing video SSSM-000216...
+get at frame: 0
+finger box: [849 182 875 208].
+ condition: 2.
+
+processing video SSSM-000217...
+get at frame: 0
+finger box: [1011  844 1037  870].
+ condition: 2.
+
+processing video SSSM-000218...
+get at frame: 0
+finger box: [1099  541 1125  567].
+ condition: 2.
+
+processing video SSSM-000219...
+get at frame: 0
+finger box: [1142  190 1168  216].
+ condition: 2.
+
+processing video SSSM-000220...
+get at frame: 5
+finger box: [ 976  837 1002  863].
+ condition: 2.
+
+processing video SSSM-000221...
+get at frame: 0
+finger box: [923 541 949 567].
+ condition: 2.
+
+processing video SSSM-000222...
+get at frame: 0
+finger box: [801 289 827 315].
+ condition: 2.
+
+processing video SSSM-000223...
+get at frame: 0
+finger box: [1242  832 1268  858].
+ condition: 2.
+
+processing video SSSM-000224...
+get at frame: 0
+finger box: [802 604 828 630].
+ condition: 2.
+
+processing video SSSM-000225...
+get at frame: 0
+finger box: [783 160 809 186].
+ condition: 2.
+
+processing video SSSM-000226...
+get at frame: 1
+finger box: [470 718 496 744].
+ condition: 2.
+
+processing video SSSM-000227...
+get at frame: 0
+finger box: [785 562 811 588].
+ condition: 2.
+
+processing video SSSM-000229...
+get at frame: 2
+finger box: [1051  879 1077  905].
+ condition: 2.
+
+processing video SSSM-000230...
+get at frame: 0
+finger box: [ 988  658 1014  684].
+ condition: 2.
+
+processing video SSSM-000231...
+get at frame: 19
+finger box: [1025  177 1051  203].
+ condition: 2.
+
+processing video SSSM-000232...
+get at frame: 0
+finger box: [954 834 980 860].
+ condition: 2.
+
+processing video SSSM-000233...
+get at frame: 0
+finger box: [813 620 839 646].
+ condition: 2.
+
+processing video SSSM-000234...
+get at frame: 0
+finger box: [ 995  253 1021  279].
+ condition: 2.
+
+processing video SSSM-000235...
+get at frame: 7
+finger box: [690 873 716 899].
+ condition: 2.
+
+processing video SSSM-000236...
+get at frame: 0
+finger box: [905 542 931 568].
+ condition: 2.
+
+processing video SSSM-000237...
+get at frame: 0
+finger box: [902 222 928 248].
+ condition: 2.
+
+processing video SSSM-000238...
+get at frame: 13
+finger box: [ 978  867 1004  893].
+ condition: 2.
+
+processing video SSSM-000239...
+get at frame: 0
+finger box: [767 716 793 742].
+ condition: 2.
+
+processing video SSSM-000240...
+get at frame: 0
+finger box: [952 253 978 279].
+ condition: 2.
+
+processing video SSSM-000241...
+get at frame: 0
+finger box: [1117  857 1143  883].
+ condition: 2.
+
+processing video SSSM-000242...
+get at frame: 0
+finger box: [1015  517 1041  543].
+ condition: 2.
+
+processing video SSSM-000243...
+get at frame: 0
+finger box: [942 299 968 325].
+ condition: 2.
+
+processing video SSSM-000245...
+get at frame: 10
+finger box: [1244  439 1270  465].
+ condition: 2.
+
+processing video SSSM-000247...
+get at frame: 0
+finger box: [ 994  732 1020  758].
+ condition: 2.
+
+processing video SSSM-000248...
+get at frame: 0
+finger box: [1146  634 1172  660].
+ condition: 2.
+
+processing video SSSM-000250...
+get at frame: 0
+finger box: [1125  913 1151  939].
+ condition: 2.
+
+processing video SSSM-000251...
+get at frame: 0
+finger box: [1069  590 1095  616].
+ condition: 2.
+
+processing video SSSM-000253...
+get at frame: 0
+finger box: [1065  840 1091  866].
+ condition: 2.
+
+processing video SSSM-000254...
+get at frame: 0
+finger box: [907 573 933 599].
+ condition: 2.
+
+processing video SSSM-000255...
+get at frame: 14
+finger box: [910  98 936 124].
+ condition: 2.
+
+processing video SSSM-000256...
+get at frame: 2
+finger box: [891 897 917 923].
+ condition: 2.
+
+processing video SSSM-000257...
+get at frame: 0
+finger box: [734 649 760 675].
+ condition: 2.
+
+processing video SSSM-000259...
+get at frame: 0
+finger box: [ 974  870 1000  896].
+ condition: 2.
+
+processing video SSSM-000260...
+get at frame: 1
+finger box: [913 408 939 434].
+ condition: 2.
+
+processing video SSSM-000262...
+get at frame: 1
+finger box: [1188  886 1214  912].
+ condition: 2.
+
+processing video SSSM-000263...
+get at frame: 1
+finger box: [1045  615 1071  641].
+ condition: 2.
+
+processing video SSSM-000265...
+get at frame: 0
+finger box: [ 990  907 1016  933].
+ condition: 2.
+
+processing video SSSM-000266...
+get at frame: 0
+finger box: [1013  492 1039  518].
+ condition: 2.
+
+processing video SSSM-000268...
+get at frame: 0
+finger box: [1005  876 1031  902].
+ condition: 2.
+
+processing video SSSM-000269...
+get at frame: 11
+finger box: [ 987  387 1013  413].
+ condition: 2.
+
+processing video SSSM-000271...
+get at frame: 0
+finger box: [1025  865 1051  891].
+ condition: 2.
+
+processing video SSSM-000272...
+get at frame: 0
+finger box: [904 677 930 703].
+ condition: 2.
+
+processing video SSSM-000274...
+get at frame: 0
+finger box: [761 870 787 896].
+ condition: 2.
+
+processing video SSSM-000275...
+get at frame: 0
+finger box: [799 470 825 496].
+ condition: 2.
+
+processing video SSSM-000277...
+get at frame: 0
+finger box: [926 899 952 925].
+ condition: 2.
+
+processing video SSSM-000278...
+get at frame: 1
+finger box: [811 667 837 693].
+ condition: 2.
+
+processing video SSSM-000279...
+get at frame: 12
+finger box: [473 486 499 512].
+ condition: 2.
+
+processing video SSSM-000280...
+get at frame: 4
+finger box: [926 868 952 894].
+ condition: 2.
+
+processing video SSSM-000282...
+get at frame: 7
+finger box: [928 222 954 248].
+ condition: 2.
+
+processing video SSSM-000283...
+get at frame: 0
+finger box: [886 895 912 921].
+ condition: 2.
+
+processing video SSSM-000284...
+get at frame: 0
+finger box: [883 593 909 619].
+ condition: 2.
+
+processing video SSSM-000285...
+get at frame: 0
+finger box: [808 177 834 203].
+ condition: 2.
+
+processing video SSSM-000286...
+get at frame: 0
+finger box: [915 887 941 913].
+ condition: 2.
+
+processing video SSSM-000287...
+get at frame: 0
+finger box: [709 720 735 746].
+ condition: 2.
+
+processing video SSSM-000288...
+get at frame: 1
+finger box: [853 217 879 243].
+ condition: 2.
+
+processing video SSSM-000289...
+get at frame: 0
+finger box: [886 866 912 892].
+ condition: 2.
+
+processing video SSSM-000290...
+get at frame: 2
+finger box: [750 531 776 557].
+ condition: 2.
+
+processing video SSSM-000291...
+get at frame: 15
+finger box: [922 233 948 259].
+ condition: 2.
+
+processing video SSSM-000292...
+get at frame: 18
+finger box: [885 873 911 899].
+ condition: 2.
+
+processing video SSSM-000293...
+get at frame: 0
+finger box: [761 533 787 559].
+ condition: 2.
+
+processing video SSSM-000295...
+get at frame: 0
+finger box: [945 904 971 930].
+ condition: 2.
+
+processing video SSSM-000296...
+get at frame: 0
+finger box: [793 632 819 658].
+ condition: 2.
+
+processing video SSSM-000297...
+get at frame: 0
+finger box: [896 160 922 186].
+ condition: 2.
+
+processing video SSSM-000298...
+get at frame: 0
+finger box: [ 994  919 1020  945].
+ condition: 2.
+
+processing video SSSM-000299...
+get at frame: 2
+finger box: [832 548 858 574].
+ condition: 2.
+
+processing video SSSM-B2-00001...
+get at frame: 8
+finger box: [1005.  686. 1031.  712.].
+ condition: 3.
